@@ -12,6 +12,7 @@ import CoreData
 class MainTVC: UITableViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let saveContext = (UIApplication.shared.delegate as! AppDelegate).saveContext
     
     var items = [ItemEntity]()
     
@@ -35,6 +36,15 @@ class MainTVC: UITableViewController {
         let navCtrl = segue.destination as! UINavigationController
         let addItemVC = navCtrl.topViewController as! AddItemVC
         addItemVC.delegate = self
+        
+        if sender is IndexPath {
+            let idx = sender as! IndexPath
+            let item = items[idx.row]
+            addItemVC.date = item.date
+            addItemVC.itemText = item.item
+            addItemVC.notesText = item.notes
+            addItemVC.indexPath = idx
+        }
     }
     
     // MARK: - Table view data source
@@ -46,7 +56,10 @@ class MainTVC: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemCell
         cell.itemLabel.text = items[indexPath.row].item
         cell.notesLabel.text = items[indexPath.row].notes
-        cell.dateLabel.text = items[indexPath.row].date?.description
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy h:mm a"
+        cell.dateLabel.text = dateFormatter.string(from: items[indexPath.row].date!)
         cell.checkLabel.isHidden = !items[indexPath.row].check
         return cell
     }
@@ -55,12 +68,27 @@ class MainTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = items[indexPath.row]
         item.check = !item.check
-        do {
-            try context.save()
-        } catch {
-            print(error)
-        }
+        saveContext()
         tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete") {
+            (action, indexPath) in
+            let item = self.items[indexPath.row]
+            self.context.delete(item)
+            self.saveContext()
+            self.items.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        
+        let edit = UITableViewRowAction(style: .normal, title: "Edit") {
+            (action, indexPath) in
+            self.performSegue(withIdentifier: "toAddItem", sender: indexPath)
+        }
+        edit.backgroundColor = UIColor.green
+        
+        return [delete, edit]
     }
     
     // MARK: - Table view delegate
@@ -70,22 +98,24 @@ class MainTVC: UITableViewController {
 }
 
 extension MainTVC: AddItemDelegate {
-    func addItem(item: String, notes: String, at date: Date) {
+    func addItem(item: String, notes: String, at date: Date, indexPath: IndexPath?) {
         print("Item", item, "Notes", notes, "Date", date)
-        let newItem = NSEntityDescription.insertNewObject(forEntityName: "ItemEntity", into: context) as! ItemEntity
-        newItem.item = item
-        newItem.notes = notes
-        newItem.date = date
-        newItem.check = false
-        items.append(newItem)
-        if context.hasChanges {
-            do {
-                try context.save()
-                print("Success")
-            } catch {
-                print("\(error)")
-            }
+        
+        if let idx = indexPath {
+            let it = items[idx.row]
+            it.item = item
+            it.notes = notes
+            it.date = date
+        } else {
+            let newItem = NSEntityDescription.insertNewObject(forEntityName: "ItemEntity", into: context) as! ItemEntity
+            newItem.item = item
+            newItem.notes = notes
+            newItem.date = date
+            newItem.check = false
+            items.append(newItem)
         }
+
+        saveContext()
         tableView.reloadData()
         dismiss(animated: true, completion: nil)
     }

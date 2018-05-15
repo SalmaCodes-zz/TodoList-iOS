@@ -28,9 +28,9 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FqV-fm-e1A">
-                                            <rect key="frame" x="229" y="11" width="130" height="21"/>
+                                            <rect key="frame" x="149" y="11" width="210" height="21"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="130" id="Jj4-6O-KCO"/>
+                                                <constraint firstAttribute="width" constant="210" id="Jj4-6O-KCO"/>
                                                 <constraint firstAttribute="height" constant="21" id="WAB-oK-uqc"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -71,7 +71,7 @@
                                         <constraint firstItem="FqV-fm-e1A" firstAttribute="trailing" secondItem="JTY-ie-uDL" secondAttribute="trailingMargin" id="KdV-EH-IU8"/>
                                         <constraint firstItem="idn-ea-9kI" firstAttribute="top" secondItem="JTY-ie-uDL" secondAttribute="topMargin" id="Syg-S1-eav"/>
                                         <constraint firstItem="bQ7-wV-B5z" firstAttribute="top" secondItem="FqV-fm-e1A" secondAttribute="bottom" constant="8" id="YzX-6t-4kL"/>
-                                        <constraint firstItem="FqV-fm-e1A" firstAttribute="leading" secondItem="idn-ea-9kI" secondAttribute="trailing" constant="-42" id="d9z-AA-VMt"/>
+                                        <constraint firstItem="FqV-fm-e1A" firstAttribute="leading" secondItem="idn-ea-9kI" secondAttribute="trailing" constant="-122" id="d9z-AA-VMt"/>
                                         <constraint firstItem="Nu2-Nm-azt" firstAttribute="top" secondItem="idn-ea-9kI" secondAttribute="bottom" constant="8" id="dUV-oZ-THq"/>
                                         <constraint firstItem="bQ7-wV-B5z" firstAttribute="trailing" secondItem="JTY-ie-uDL" secondAttribute="trailingMargin" id="hcb-3U-bcH"/>
                                         <constraint firstItem="Nu2-Nm-azt" firstAttribute="leading" secondItem="JTY-ie-uDL" secondAttribute="leadingMargin" id="tKo-5I-U9R"/>
@@ -93,7 +93,7 @@
                     <navigationItem key="navigationItem" id="JSH-Vb-ZKw">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="INy-9X-ytb">
                             <connections>
-                                <segue destination="Zoe-7I-q7q" kind="presentation" id="Ayi-Bl-Zru"/>
+                                <segue destination="Zoe-7I-q7q" kind="presentation" identifier="toAddItem" id="Ayi-Bl-Zru"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -172,6 +172,7 @@
                         <outlet property="DateField" destination="dSP-fd-ah6" id="ed9-Lw-CCg"/>
                         <outlet property="ItemTextField" destination="t6D-Ke-lDx" id="HlN-9r-Zo1"/>
                         <outlet property="NotesTextField" destination="3xc-jw-20N" id="vSx-O6-ptE"/>
+                        <outlet property="button" destination="JHU-9A-yuy" id="OhZ-Gv-su7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oQd-Sg-bYs" userLabel="First Responder" sceneMemberID="firstResponder"/>
